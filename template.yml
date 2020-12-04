@@ -19,66 +19,91 @@ Resources:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
   # This is a Lambda function config associated with the source code: get-all-items.js
-  getAllItemsFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/get-all-items.getAllItemsHandler
-      Runtime: nodejs12.x
-      MemorySize: 128
-      Timeout: 100
-      Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
-      Policies:
-        # Give Create/Read/Update/Delete Permissions to the SampleTable
-        - DynamoDBCrudPolicy:
-            TableName: !Ref AuthTable
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          SAMPLE_TABLE: !Ref AuthTable
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /
-            Method: GET
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+  # getAllItemsFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: src/handlers/get-all-items.getAllItemsHandler
+  #     Runtime: nodejs12.x
+  #     MemorySize: 128
+  #     Timeout: 100
+  #     Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
+  #     Policies:
+  #       # Give Create/Read/Update/Delete Permissions to the SampleTable
+  #       - DynamoDBCrudPolicy:
+  #           TableName: !Ref AuthTable
+  #     Environment:
+  #       Variables:
+  #         # Make table name accessible as environment variable from function code during execution
+  #         SAMPLE_TABLE: !Ref AuthTable
+  #     Events:
+  #       Api:
+  #         Type: Api
+  #         Properties:
+  #           Path: /
+  #           Method: GET
+  # # Each Lambda function is defined by properties:
+  # # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
-  # This is a Lambda function config associated with the source code: get-by-id.js
-  getByIdFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/get-by-id.getByIdHandler
-      Runtime: nodejs12.x
-      MemorySize: 128
-      Timeout: 100
-      Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
-      Policies:
-        # Give Create/Read/Update/Delete Permissions to the SampleTable
-        - DynamoDBCrudPolicy:
-            TableName: !Ref AuthTable
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          SAMPLE_TABLE: !Ref AuthTable
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /{id}
-            Method: GET
+  # # This is a Lambda function config associated with the source code: get-by-id.js
+  # getByIdFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: src/handlers/get-by-id.getByIdHandler
+  #     Runtime: nodejs12.x
+  #     MemorySize: 128
+  #     Timeout: 100
+  #     Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
+  #     Policies:
+  #       # Give Create/Read/Update/Delete Permissions to the SampleTable
+  #       - DynamoDBCrudPolicy:
+  #           TableName: !Ref AuthTable
+  #     Environment:
+  #       Variables:
+  #         # Make table name accessible as environment variable from function code during execution
+  #         SAMPLE_TABLE: !Ref AuthTable
+  #     Events:
+  #       Api:
+  #         Type: Api
+  #         Properties:
+  #           Path: /{id}
+  #           Method: GET
+
+  
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
   # This is a Lambda function config associated with the source code: put-item.js
-  putItemFunction:
+  # putItemFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: src/handlers/put-item.putItemHandler
+  #     Runtime: nodejs12.x
+  #     MemorySize: 128
+  #     Timeout: 100
+  #     Description: A simple example includes a HTTP post method to add one item to a DynamoDB table.
+  #     Policies:
+  #       # Give Create/Read/Update/Delete Permissions to the SampleTable
+  #       - DynamoDBCrudPolicy:
+  #           TableName: !Ref AuthTable
+  #     Environment:
+  #       Variables:
+  #         # Make table name accessible as environment variable from function code during execution
+  #         SAMPLE_TABLE: !Ref AuthTable
+  #     Events:
+  #       Api:
+  #         Type: Api
+  #         Properties:
+  #           Path: /
+  #           Method: POST
+
+  getAuthCode:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/put-item.putItemHandler
+      Handler: src/auth/getAuthCode.getAuthCode
       Runtime: nodejs12.x
       MemorySize: 128
       Timeout: 100
-      Description: A simple example includes a HTTP post method to add one item to a DynamoDB table.
+      Description: GET AUTH CODE AND REPLACE NEW ONE 
       Policies:
         # Give Create/Read/Update/Delete Permissions to the SampleTable
         - DynamoDBCrudPolicy:
@@ -91,7 +116,30 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path: /
+            Path: /getAuthCode
+            Method: POST
+
+  getNewsfeed:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/newsfeed/get-newsfeed.getNewsfeed
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: GET DATA FOR NEWSFEED
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref NewsFeedTable
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          SAMPLE_TABLE: !Ref NewsFeedTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /newsfeed/{workspaceid}
             Method: POST
   # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
@@ -100,13 +148,35 @@ Resources:
   AuthTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      TableName: Auth_Hackathon
+      TableName: authTableOne
       PrimaryKey:
         Name: id
         Type: String
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
+
+  # WorkerTable:
+  #   Type: AWS::Serverless::SimpleTable
+  #   Properties:
+  #     TableName: WorkerTable
+  #     PrimaryKey:
+  #       Name: workerId
+  #       Type: String
+  #     ProvisionedThroughput:
+  #       ReadCapacityUnits: 2
+  #       WriteCapacityUnits: 2
+
+  NewsFeedTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: newsfeedTable
+      PrimaryKey:
+        Name: postId
+        Type: String
+      # ProvisionedThroughput:
+      #   ReadCapacityUnits: 2
+      #   WriteCapacityUnits: 2
 
 Outputs:
   WebEndpoint:

@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "AWS_CloudFormation:src/newsfeed/get-newsfeed.getNewsfeed (nodejs12.x)",
+            "invokeTarget": {
+                "target": "code",
+                "projectRoot": "\\AWS_CloudFormation\\auth",
+                "lambdaHandler": "src/newsfeed/get-newsfeed.getNewsfeed"
+            },
+            "lambda": {
+                "runtime": "nodejs12.x",
+                "payload": {},
+                "environmentVariables": {}
+            }
+        }
+    ]
+}
