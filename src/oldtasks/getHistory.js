@@ -5,9 +5,8 @@ const tableName = process.env.SAMPLE_TABLE;
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
-
 exports.getHistory = async(event) => {
-    const workerId = event.workerId; //get workerId via parameter
+    const workerId = event.pathParameters.workerId; //get workerId via parameter
     var params = {
         TableName: tableName, //report history table
         FilterExpression: 'workerId = : myworkerId',

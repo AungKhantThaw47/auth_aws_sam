@@ -5,10 +5,9 @@ const tableName = process.env.SAMPLE_TABLE;
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
-
 exports.myTaskDetail = async(event) => {
-
-    const taskId = event.body.taskId;
+    const eventBody = JSON.parse(event.body)
+    const taskId = eventBody.taskId;
     var params = {
         TableName: tableName,
         FilterExpression: 'taskId = : taskDetailId',

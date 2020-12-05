@@ -8,7 +8,7 @@ var s3 = new AWS.S3();
 
 exports.myTaskAll = async(event) => {
     //get workSpaceId, workerId, workerType 
-    const workspaceId = event.workspaceId;
+    const workspaceId = event.pathParameters.workspaceId;
     var params = {
         TableName: tableName,
         FilterExpression: 'workspaceId = : myworkspaceId',

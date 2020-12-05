@@ -9,7 +9,7 @@ var s3 = new AWS.S3();
 exports.main = async(event, context, callback) => {
     var params = {
         TableName: tableName,
-        Item: event.body
+        Item: JSON.parse(event.body)
     };
     var result = await docClient.put(params).promise();
     const response = {

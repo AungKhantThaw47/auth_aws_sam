@@ -8,8 +8,9 @@ var s3 = new AWS.S3();
 
 exports.submitReport = async(event) => {
     //get task from table
-    const taskId = event.body.taskId;
-    const report_data = event.body.reportData;
+    const eventBody = JSON.parse(event.body)
+    const taskId = eventBody.taskId;
+    const report_data = eventBody.reportData;
     var params = {
         TableName: tableName,
         FilterExpression: 'taskId = : mytaskId',

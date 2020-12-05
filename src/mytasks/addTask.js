@@ -8,13 +8,14 @@ var s3 = new AWS.S3();
 
 exports.addTask = async(event) => {
 
+    const eventBody = JSON.parse(event.body)
     const body = {
-        workerId: event.body.workerId,
-        time: event.body.time,
-        location: event.body.location,
-        topic: event.body.topic,
-        taskId: event.body.workerId + event.body.workspaceId + Date.now(),
-        info: event.body.info //addtional information
+        workerId: eventBody.workerId,
+        time: eventBody.time,
+        location: eventBody.location,
+        topic: eventBody.topic,
+        taskId: eventBody.workerId + eventBody.workspaceId + Date.now(),
+        info: eventBody.info //addtional information
     };
     var params = {
         TableName: tableName,

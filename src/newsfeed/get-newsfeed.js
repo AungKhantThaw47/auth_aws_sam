@@ -5,10 +5,9 @@ const tableName = process.env.SAMPLE_TABLE;
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
-
 exports.getNewsfeed = async(event, context, callback) => {
     //get workSpaceId, workerId, workerType 
-    const workspaceId = event.workspaceId;
+    const workspaceId = event.pathParameters.workspaceId;
     var params = {
         TableName: tableName,
         FilterExpression: 'workspaceId = : myworkspaceId',
