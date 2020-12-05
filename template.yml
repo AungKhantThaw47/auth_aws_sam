@@ -200,7 +200,7 @@ Resources:
   AuthTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      TableName: AuthTable
+      TableName: AuthTableF
       PrimaryKey:
         Name: phone
         Type: String
@@ -211,7 +211,7 @@ Resources:
   CurrentTaskTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      TableName: currentTask
+      TableName: currentTaskF
       PrimaryKey:
         Name: taskId
         Type: String
@@ -222,7 +222,7 @@ Resources:
   OldTaskTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      TableName: oldTask
+      TableName: oldTaskF
       PrimaryKey:
         Name: taskId
         Type: String
@@ -233,7 +233,7 @@ Resources:
   WorkerTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      TableName: WorkerTable
+      TableName: WorkerTableV
       PrimaryKey:
         Name: workerId
         Type: String
@@ -244,7 +244,7 @@ Resources:
   NewsFeedTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      TableName: NewsfeedTableT
+      TableName: NewsfeedTableF
       PrimaryKey:
         Name: postId
         Type: String
