@@ -3,6 +3,21 @@
         {
             "type": "aws-sam",
             "request": "direct-invoke",
+            "name": "AWS_CloudFormation:src/workerSetup/main.getNewsfeed (nodejs12.x)",
+            "invokeTarget": {
+                "target": "code",
+                "projectRoot": "\\AWS_CloudFormation\\auth",
+                "lambdaHandler": "src/workerSetup/main.getNewsfeed"
+            },
+            "lambda": {
+                "runtime": "nodejs12.x",
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
             "name": "AWS_CloudFormation:src/newsfeed/get-newsfeed.getNewsfeed (nodejs12.x)",
             "invokeTarget": {
                 "target": "code",

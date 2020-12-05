@@ -6,13 +6,12 @@ var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
 
-exports.myTaskDetail = async(event) => {
-
-    const taskId = event.body.taskId;
+exports.getHistory = async(event) => {
+    const workerId = event.workerId; //get workerId via parameter
     var params = {
-        TableName: tableName,
-        FilterExpression: 'taskId = : taskDetailId',
-        ExpressionAttributeValues: { ':taskDetailId': taskId }
+        TableName: tableName, //report history table
+        FilterExpression: 'workerId = : myworkerId',
+        ExpressionAttributeValues: { ':myworkerId': workerId }
     };
     const data = await docClient.scan(params).promise();
     const item = JSON.stringify(data);

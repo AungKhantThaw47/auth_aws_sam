@@ -1,22 +1,30 @@
-# This is the SAM template that represents the architecture of your serverless application
-# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-basics.html
-
-# The AWSTemplateFormatVersion identifies the capabilities of the template
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/format-version-structure.html
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   auth
-
-# Transform section specifies one or more macros that AWS CloudFormation uses to process your template
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html
 Transform:
 - AWS::Serverless-2016-10-31
-
-# Resources declares the AWS resources that you want to include in the stack
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
 Resources:
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  SetupCode:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/workerSetup/main.main
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: GET Setup Workers 
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref WorkerTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref WorkerTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /workerSetup
+            Method: POST
 
   getAuthCode:
     Type: AWS::Serverless::Function
@@ -27,12 +35,10 @@ Resources:
       Timeout: 100
       Description: GET AUTH CODE AND REPLACE NEW ONE 
       Policies:
-        # Give Create/Read/Update/Delete Permissions to the SampleTable
         - DynamoDBCrudPolicy:
             TableName: !Ref AuthTable
       Environment:
         Variables:
-          # Make table name accessible as environment variable from function code during execution
           SAMPLE_TABLE: !Ref AuthTable
       Events:
         Api:
@@ -50,12 +56,10 @@ Resources:
       Timeout: 100
       Description: GET DATA FOR NEWSFEED
       Policies:
-        # Give Create/Read/Update/Delete Permissions to the SampleTable
         - DynamoDBCrudPolicy:
             TableName: !Ref NewsFeedTable
       Environment:
         Variables:
-          # Make table name accessible as environment variable from function code during execution
           SAMPLE_TABLE: !Ref NewsFeedTable
       Events:
         Api:
@@ -63,7 +67,6 @@ Resources:
           Properties:
             Path: /newsfeed/{workspaceid}
             Method: GET
-
 
   postNewsfeed:
     Type: AWS::Serverless::Function
@@ -74,12 +77,10 @@ Resources:
       Timeout: 100
       Description: POST DATA FOR NEWSFEED
       Policies:
-        # Give Create/Read/Update/Delete Permissions to the SampleTable
         - DynamoDBCrudPolicy:
             TableName: !Ref NewsFeedTable
       Environment:
         Variables:
-          # Make table name accessible as environment variable from function code during execution
           SAMPLE_TABLE: !Ref NewsFeedTable
       Events:
         Api:
@@ -88,32 +89,114 @@ Resources:
             Path: /newsfeed/{workspaceid}
             Method: POST
 
-    # addTask:
-    # Type: AWS::Serverless::Function
-    # Properties:
-    #   Handler: src/mytasks/addTask.addTask
-    #   Runtime: nodejs12.x
-    #   MemorySize: 128
-    #   Timeout: 100
-    #   Description: ASSIGN NEW TASK 
-    #   Policies:
-    #     # Give Create/Read/Update/Delete Permissions to the SampleTable
-    #     - DynamoDBCrudPolicy:
-    #         TableName: !Ref CurrentTaskTable
-    #   Environment:
-    #     Variables:
-    #       # Make table name accessible as environment variable from function code during execution
-    #       SAMPLE_TABLE: !Ref CurrentTaskTable
-    #   Events:
-    #     Api:
-    #       Type: Api
-    #       Properties:
-    #         Path: /task/{workspaceid}
-    #         Method: POST
-  # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
+  addTask:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/mytasks/addTask.addTask
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: ASSIGN NEW TASK 
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CurrentTaskTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref CurrentTaskTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /addTask
+            Method: POST
 
-  # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
+  myTaskAll:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/mytasks/myTaskAll.myTaskAll
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: Take all tasks
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CurrentTaskTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref CurrentTaskTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /task/{workspaceid}
+            Method: POST
+
+  myTaskDetail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/mytasks/myTaskDetail.myTaskDetail
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: Take all tasks
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CurrentTaskTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref CurrentTaskTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /task/{workspaceid}
+            Method: POST
+
+  submitReport:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/report/submitReport.submitReport
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: ADD New Report
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CurrentTaskTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref OldTaskTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref CurrentTaskTable
+          SAMPLE_TABLE_TWO: !Ref OldTaskTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /task/{workspaceid}
+            Method: POST
+
+  getHistory:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/oldtasks/getHistory.getHistory
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: Get Old Tasks
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref OldTaskTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref OldTaskTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /task/{workspaceid}
+            Method: POST
+
   AuthTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -129,6 +212,17 @@ Resources:
     Type: AWS::Serverless::SimpleTable
     Properties:
       TableName: currentTask
+      PrimaryKey:
+        Name: taskId
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+  
+  OldTaskTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: oldTask
       PrimaryKey:
         Name: taskId
         Type: String
@@ -157,8 +251,3 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
-
-Outputs:
-  WebEndpoint:
-    Description: "API Gateway endpoint URL for Prod stage"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

@@ -7,20 +7,18 @@ var s3 = new AWS.S3();
 
 
 exports.addTask = async(event) => {
-    
+
     const body = {
-        workerId : event.body.workerId,
-        time : event.body.time,
-        location : event.body.location,
-        customer : event.body.customer,
-        topic : event.body.topic,
-        product : event.body.product,
-        taskId : event.body.workerId + event.body.workspaceId + Date.now(),   
-        info : event.body.info //addtional information
+        workerId: event.body.workerId,
+        time: event.body.time,
+        location: event.body.location,
+        topic: event.body.topic,
+        taskId: event.body.workerId + event.body.workspaceId + Date.now(),
+        info: event.body.info //addtional information
     };
     var params = {
         TableName: tableName,
-        Item: body  //body is a JSON object contains workerId, workerspaceId, date, postid, data
+        Item: body //body is a JSON object contains workerId, workerspaceId, date, postid, data
     };
 
     const result = await docClient.put(params).promise();

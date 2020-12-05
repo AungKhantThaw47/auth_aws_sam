@@ -1,37 +1,45 @@
-//NOt FINISH YET
+const dynamodb = require('aws-sdk/clients/dynamodb');
+const docClient = new dynamodb.DocumentClient();
+const tableName = process.env.SAMPLE_TABLE;
+const tableNameTwo = process.env.SAMPLE_TABLE_TWO;
+
+var AWS = require('aws-sdk');
+var s3 = new AWS.S3();
+
+exports.submitReport = async(event) => {
+    //get task from table
+    const taskId = event.body.taskId;
+    const report_data = event.body.reportData;
+    var params = {
+        TableName: tableName,
+        FilterExpression: 'taskId = : mytaskId',
+        ExpressionAttributeValues: { ':mytaskId': taskId }
+    };
+    const task_data_result = await docClient.scan(params).promise();
+    const task_data = task_data_result.Item;
+    task_data.report_data = report_data
+
+    //send report to historyTable
+    var Updateparams = {
+        TableName: tableNameTwo,
+        Item: task_data
+    };
+    const result = await docClient.put(Updateparams).promise();
 
 
-// const dynamodb = require('aws-sdk/clients/dynamodb');
-// const docClient = new dynamodb.DocumentClient();
-// const tableName = process.env.SAMPLE_TABLE;
+    //delete task from current task table
+    var Deleteparams = {
+        TableName: table, //currenttask table
+        Key: {
+            "taskId": taskId
+        },
+        ConditionExpression: "taskId = : mytaskId",
+        ExpressionAttributeValues: { ":mytaskId": taskId }
+    };
+    docClient.delete(params);
 
-// var AWS = require('aws-sdk');
-// var s3 = new AWS.S3();
-
-
-// exports.postNewsfeed = async(event) => {
-    
-//     const body = {
-//          workspaceId : event.workspaceId,
-//          workerId : event.body.workerId,
-//          Reportdate : Date.now(),
-//          data : event.body.data,
-//          taskId : event.body.taskId,
-//          reportId : event.workspaceId +  event.body.workerId + Date.now()
-//     };
-//     var params = {
-//         TableName: tableName,
-//         Item: body  //body is a JSON object contains workerId, workerspaceId, date, postid, data
-//     };
-
-//     const result = await docClient.put(params).promise();
-
-//     const response = {
-//         statusCode: 200,
-//         body: JSON.stringify(body)
-//     };
-
-//     // All log statements are written to CloudWatch
-//     console.info(`response from: ${event.path} statusCode: ${response.statusCode} body: ${response.body}`);
-//     return response;
-// }
+    const response = "WORK HARD!";
+    // All log statements are written to CloudWatch
+    console.info(`response from: ${event.path} statusCode: ${response.statusCode} body: ${response.body}`);
+    return response;
+}
