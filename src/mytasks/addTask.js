@@ -6,14 +6,17 @@ var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
 
-exports.postNewsfeed = async(event) => {
+exports.addTask = async(event) => {
     
     const body = {
-         workspaceId : event.workspaceId,
-         workerId : event.body.workerId,
-         Postdate : Date.now(),
-         data : event.body.data,
-         postId : event.workspaceId +  event.body.workerId + Date.now()
+        workerId : event.body.workerId,
+        time : event.body.time,
+        location : event.body.location,
+        customer : event.body.customer,
+        topic : event.body.topic,
+        product : event.body.product,
+        taskId : event.body.workerId + event.body.workspaceId + Date.now(),   
+        info : event.body.info //addtional information
     };
     var params = {
         TableName: tableName,

@@ -6,13 +6,13 @@ var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
 
-exports.getNewsfeed = async(event, context, callback) => {
+exports.myTaskAll = async(event) => {
     //get workSpaceId, workerId, workerType 
-    const workspaceId = event.workspaceId;
+    const workerId = event.workerId;
     var params = {
         TableName: tableName,
-        FilterExpression: 'workspaceId = : myworkspaceId',
-        ExpressionAttributeValues: { ':myworkspaceId': workspaceId }
+        FilterExpression: 'workerId = : myworkerId',
+        ExpressionAttributeValues: { ':myworkerId': workerId }
     };
     const data = await docClient.scan(params).promise();
     const item = JSON.stringify(data);

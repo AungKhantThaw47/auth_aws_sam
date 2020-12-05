@@ -1,0 +1,15 @@
+{
+    "title": "DM-AM Workspace",
+    "team": "Team 1",
+    "Admin": "Daw Hla Hla",
+    "AdminID": "01",
+    "Phone number": "09254673009",
+    "Employees": [
+        { "employeeID": "1", "Name": "Maung Kyaw", "job": "Bahan Township Manager", "Phone number": "095065323", "score": "349" },
+        { "employeeID": "2", "Name": "Su Su", "job": "Yankin Township Manager", "Phone number": "09250452523", "score": "387" },
+        { "employeeID": "3", "Name": "Nu Nu", "job": "Hledan Township Manager", "Phone number": "09250087254", "score": "342" },
+        { "employeeID": "4", "Name": "Tun Tun", "job": "Hlaing Township Manager", "Phone number": "09420067530", "score": "336" },
+        { "employeeID": "5", "Name": "Ei Ei", "job": "Kamayut Township Manager", "Phone number": "095000542", "score": "298" }
+    ]
+
+}

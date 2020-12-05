@@ -1,0 +1,15 @@
+{
+    "title": "AM-EE Workspace",
+    "team": "Team 1",
+    "Admin": "U Kyaw Kyaw",
+    "AdminID": "01",
+    "Phone number": "095007824",
+    "Employees": [
+        { "employeeID": "1", "Name": "Maung Maung", "job": "Programmer", "Phone number": "095007823", "score": "430" },
+        { "employeeID": "2", "Name": "Hla Hla", "job": "Researcher", "Phone number": "095007564", "score": "420" },
+        { "employeeID": "3", "Name": "Mya Mya", "job": "Sales", "Phone number": "095056623", "score": "412" },
+        { "employeeID": "4", "Name": "Kaung Kaung", "job": "Researcher", "Phone number": "095093243", "score": "408" },
+        { "employeeID": "5", "Name": "Ma Ma", "job": "Sales", "Phone number": "095003823", "score": "435" }
+    ]
+
+}

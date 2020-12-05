@@ -1,0 +1,15 @@
+{
+    "title": "DM-AM Workspace",
+    "team": "Team 2",
+    "Admin": "U Hla Aung",
+    "AdminID": "02",
+    "Phone number": "09254573009",
+    "Employees": [
+        { "employeeID": "1", "Name": "Khant Khant", "job": "Ahlone Township Manager", "Phone number": "095037623", "score": "297" },
+        { "employeeID": "2", "Name": "Kyaw Soe", "job": "Tamwe Township Manager", "Phone number": "09250450932", "score": "353" },
+        { "employeeID": "3", "Name": "Aung Htun", "job": "San Chaung Township Manager", "Phone number": "09254589254", "score": "321" },
+        { "employeeID": "4", "Name": "Khine Khine", "job": "Insein Township Manager", "Phone number": "095009832", "score": "308" },
+        { "employeeID": "5", "Name": "Shwe Shwe", "job": "Myaynigone Township Manager", "Phone number": "095007832", "score": "291" }
+    ]
+
+}
