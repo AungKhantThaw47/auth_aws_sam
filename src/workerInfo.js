@@ -11,9 +11,14 @@ exports.myTaskAll = async(event) => {
     const workspaceId = event.pathParameters.workspaceId;
     var params = {
         TableName: tableName,
-        FilterExpression: 'workspaceId = : myworkspaceId',
+        FilterExpression: 'workspaceId = :myworkspaceId',
         ExpressionAttributeValues: { ':myworkspaceId': workspaceId }
     };
     const data = await docClient.scan(params).promise();
     const item = JSON.stringify(data);
+    const response = {
+        statusCode: 200,
+        body: item
+    };
+    return response
 }

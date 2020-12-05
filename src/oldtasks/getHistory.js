@@ -9,9 +9,14 @@ exports.getHistory = async(event) => {
     const workerId = event.pathParameters.workerId; //get workerId via parameter
     var params = {
         TableName: tableName, //report history table
-        FilterExpression: 'workerId = : myworkerId',
+        FilterExpression: 'workerId = :myworkerId',
         ExpressionAttributeValues: { ':myworkerId': workerId }
     };
     const data = await docClient.scan(params).promise();
-    const item = JSON.stringify(data);
+    const item = JSON.stringify(data.Items);
+    const response = {
+        statusCode: 200,
+        body: item
+    };
+    return response
 }

@@ -13,7 +13,7 @@ exports.submitReport = async(event) => {
     const report_data = eventBody.reportData;
     var params = {
         TableName: tableName,
-        FilterExpression: 'taskId = : mytaskId',
+        FilterExpression: 'taskId = :mytaskId',
         ExpressionAttributeValues: { ':mytaskId': taskId }
     };
     const task_data_result = await docClient.scan(params).promise();
@@ -34,7 +34,7 @@ exports.submitReport = async(event) => {
         Key: {
             "taskId": taskId
         },
-        ConditionExpression: "taskId = : mytaskId",
+        ConditionExpression: "taskId = :mytaskId",
         ExpressionAttributeValues: { ":mytaskId": taskId }
     };
     docClient.delete(params);

@@ -65,7 +65,7 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path: /newsfeed/{workspaceid}
+            Path: /newsfeed/{workspaceId}
             Method: GET
 
   postNewsfeed:
@@ -86,7 +86,7 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path: /newsfeed/{workspaceid}
+            Path: /newsfeed/{workspaceId}
             Method: POST
 
   addTask:
@@ -200,9 +200,9 @@ Resources:
   AuthTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      TableName: AuthTableT
+      TableName: AuthTable
       PrimaryKey:
-        Name: id
+        Name: phone
         Type: String
       ProvisionedThroughput:
         ReadCapacityUnits: 2
