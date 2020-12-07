@@ -5,22 +5,26 @@ const tableName = process.env.SAMPLE_TABLE;
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
-exports.postNewsfeed = async(event) => {
+exports.postmeeting = async(event) => {
 
-    const eventBody = JSON.parse(event.body)
-    const workspaceId = event.pathParameters.workspaceId
-    const workerId = eventBody.workerId
-    const data = eventBody.data
+    const eventBody = JSON.parse(event.body);
+    const meetingId = event.pathParameters.meetingId;
+    const workspaceId = eventBody.workspaceId;
+    const title = eventBody.title;
+    const starttime = eventBody.starttime;
+    const endtime = eventBody.endtime;
+    const additionalInfo = eventBody.additionalInfo;
     const body = {
-        workspaceId: workspaceId,
-        workerId: workerId,
-        Postdate: Date.now(),
-        data: data,
-        postId: workspaceId + workerId + Date.now()
+        meetingId : meetingId,
+        workspaceId : workspaceId,
+        title : title,
+        starttime : starttime,
+        endtime : endtime,
+        additionalInfo : additionalInfo
     };
     var params = {
         TableName: tableName,
-        Item: body //body is a JSON object contains workerId, workerspaceId, date, postid, data
+        Item: body 
     };
 
     const result = await docClient.put(params).promise();

@@ -6,24 +6,23 @@ const tableNameTwo = process.env.SAMPLE_TABLE_TWO;
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
-exports.submitReport = async(event) => {
-    //get task from table
+exports.removemeeting = async(event) => {
+    //get meeting from table
     const eventBody = JSON.parse(event.body)
-    const taskId = eventBody.taskId;
-    const report_data = eventBody.reportData;
+    const meetingId = eventBody.meetingId;
     var params = {
         TableName: tableName,
-        FilterExpression: 'taskId = :mytaskId',
-        ExpressionAttributeValues: { ':mytaskId': taskId }
+        FilterExpression: 'meetingId = :mymeetingId',
+        ExpressionAttributeValues: { ':mymeetingId': meetingId }
     };
-    const task_data_result = await docClient.scan(params).promise();
-    const task_data = task_data_result.Item;
-    task_data.report_data = report_data
+    const meeting_result = await docClient.scan(params).promise();
+    const meeting = meeting_result.Item;
+    
 
-    //send report to staging table
+    //send report to historyTable
     var Updateparams = {
         TableName: tableNameTwo,
-        Item: task_data
+        Item: meeting
     };
     const result = await docClient.put(Updateparams).promise();
 
@@ -32,17 +31,14 @@ exports.submitReport = async(event) => {
     var Deleteparams = {
         TableName: table, //currenttask table
         Key: {
-            "taskId": taskId
+            "meetingId": meetingId
         },
-        ConditionExpression: "taskId = :mytaskId",
-        ExpressionAttributeValues: { ":mytaskId": taskId }
+        ConditionExpression: "meetingId=:mymeetingId",
+        ExpressionAttributeValues: { ":mymeetingId":meetingId }
     };
     docClient.delete(params);
 
-    
     const response = "WORK HARD!";
-    
-    
     // All log statements are written to CloudWatch
     console.info(`response from: ${event.path} statusCode: ${response.statusCode} body: ${response.body}`);
     return response;

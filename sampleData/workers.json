@@ -1,15 +1,15 @@
 [
-    { "employeeID": "1", "Name": "U Kyaw Kyaw", "workerType": "AM", "Phone number": "095007823", "workSpaceOne": "1", "workSpaceTwo": "2", "score": "430" },
-    { "employeeID": "2", "Name": "Maung Maung", "workerType": "EE", "Phone number": "095007823", "workSpaceOne": "0", "workSpaceTwo": "1", "score": "430" },
-    { "employeeID": "3", "Name": "Hla Hla", "workerType": "EE", "Phone number": "095007564", "workSpaceOne": "0", "workSpaceTwo": "1", "score": "420" },
-    { "employeeID": "4", "Name": "Mya Mya", "workerType": "EE", "Phone number": "095056623", "workSpaceOne": "0", "workSpaceTwo": "1", "score": "412" },
-    { "employeeID": "5", "Name": "Kaung Kaung", "workerType": "EE", "Phone number": "095093243", "workSpaceOne": "0", "workSpaceTwo": "1", "score": "408" },
-    { "employeeID": "6", "Name": "Ma Ma", "workerType": "EE", "Phone number": "095003823", "workSpaceOne": "0", "workSpaceTwo": "1", "score": "435" },
-    { "employeeID": "7", "Name": "Daw Chaw Chaw", "workerType": "AM", "Phone number": "095007823", "workSpaceOne": "3", "workSpaceTwo": "2", "score": "430" },
-    { "employeeID": "8", "Name": "Kyaw Kyaw", "workerType": "EE", "Phone number": "095078823", "workSpaceOne": "0", "workSpaceTwo": "3", "score": "534" },
-    { "employeeID": "9", "Name": "Maung Thant", "workerType": "EE", "Phone number": "09250986523", "workSpaceOne": "0", "workSpaceTwo": "3", "score": "521" },
-    { "employeeID": "10", "Name": "Hla Hla", "workerType": "EE", "Phone number": "09420087254", "workSpaceOne": "0", "workSpaceTwo": "3", "score": "503" },
-    { "employeeID": "11", "Name": "Aung Aung", "workerType": "EE", "Phone number": "095096723", "workSpaceOne": "0", "workSpaceTwo": "3", "score": "509" },
-    { "employeeID": "12", "Name": "Lin Lin", "workerType": "EE", "Phone number": "095089853", "workSpaceOne": "0", "workSpaceTwo": "3", "score": "435" },
-    { "employeeID": "13", "Name": "Daw Hla Hla", "workerType": "DM", "Phone number": "095007823", "workSpaceOne": "2", "workSpaceTwo": "0", "score": "430" }
+    { "workerId": "1", "Name": "U Kyaw Kyaw", "workerType": "AM", "Phone": "095007823", "workSpaceOne": "1", "workSpaceTwo": "2", "score": "430" },
+    { "workerId": "2", "Name": "Maung Maung", "workerType": "EE", "Phone": "095007823", "workSpaceOne": "0", "workSpaceTwo": "1", "score": "430" },
+    { "workerId": "3", "Name": "Hla Hla", "workerType": "EE", "Phone": "095007564", "workSpaceOne": "0", "workSpaceTwo": "1", "score": "420" },
+    { "workerId": "4", "Name": "Mya Mya", "workerType": "EE", "Phone": "095056623", "workSpaceOne": "0", "workSpaceTwo": "1", "score": "412" },
+    { "workerId": "5", "Name": "Kaung Kaung", "workerType": "EE", "Phone": "095093243", "workSpaceOne": "0", "workSpaceTwo": "1", "score": "408" },
+    { "workerId": "6", "Name": "Ma Ma", "workerType": "EE", "Phone": "095003823", "workSpaceOne": "0", "workSpaceTwo": "1", "score": "435" },
+    { "workerId": "7", "Name": "Daw Chaw Chaw", "workerType": "AM", "Phone": "095007823", "workSpaceOne": "3", "workSpaceTwo": "2", "score": "430" },
+    { "workerId": "8", "Name": "Kyaw Kyaw", "workerType": "EE", "Phone": "095078823", "workSpaceOne": "0", "workSpaceTwo": "3", "score": "534" },
+    { "workerId": "9", "Name": "Maung Thant", "workerType": "EE", "Phone": "09250986523", "workSpaceOne": "0", "workSpaceTwo": "3", "score": "521" },
+    { "workerId": "10", "Name": "Hla Hla", "workerType": "EE", "Phone": "09420087254", "workSpaceOne": "0", "workSpaceTwo": "3", "score": "503" },
+    { "workerId": "11", "Name": "Aung Aung", "workerType": "EE", "Phone": "095096723", "workSpaceOne": "0", "workSpaceTwo": "3", "score": "509" },
+    { "workerId": "12", "Name": "Lin Lin", "workerType": "EE", "Phone": "095089853", "workSpaceOne": "0", "workSpaceTwo": "3", "score": "435" },
+    { "workerId": "13", "Name": "Daw Hla Hla", "workerType": "DM", "Phone": "095007823", "workSpaceOne": "2", "workSpaceTwo": "0", "score": "430" }
 ]

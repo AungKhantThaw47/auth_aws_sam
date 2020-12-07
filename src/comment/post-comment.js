@@ -5,18 +5,18 @@ const tableName = process.env.SAMPLE_TABLE;
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
-exports.postNewsfeed = async(event) => {
+exports.postComment = async(event) => {
 
     const eventBody = JSON.parse(event.body)
-    const workspaceId = event.pathParameters.workspaceId
+    const postId = event.pathParameters.postid
     const workerId = eventBody.workerId
     const data = eventBody.data
     const body = {
-        workspaceId: workspaceId,
+        postId: postId,
         workerId: workerId,
         Postdate: Date.now(),
         data: data,
-        postId: workspaceId + workerId + Date.now()
+        commentId: postId + workerId + Date.now()
     };
     var params = {
         TableName: tableName,
