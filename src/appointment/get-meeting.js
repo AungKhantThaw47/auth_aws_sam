@@ -6,11 +6,11 @@ var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
 exports.getAppointment = async(event, context, callback) => {
-    const appointmentId = event.pathParameters.appointmentId; 
+    const workspaceid = event.pathParameters.workspaceid; 
     var params = {
         TableName: tableName,
-        FilterExpression: 'appointmentId=:myappointmentId',
-        ExpressionAttributeValues: { ":myappointmentId": appointmentId }
+        FilterExpression: 'workspaceid=:myworkspaceid',
+        ExpressionAttributeValues: { ":myworkspaceid": workspaceid }
     };
     const data = await docClient.scan(params).promise();
     const item = JSON.stringify(data.Items);

@@ -9,18 +9,18 @@ var s3 = new AWS.S3();
 
 exports.decision = async(event) => {
     //get task from table
-    const eventBody = JSON.parse(event.body)
-    const taskId = eventBody.taskId;
-    const flag = eventBody.flag;
+    
+    const taskId = event.body.taskId;
+    const flag = event.body.flag;
     
     if(flag == "Accept"){
     var params = {
         TableName: tableName,
-        FilterExpression: 'taskId = :mytaskId',
+        FilterExpression: 'taskId =:mytaskId',
         ExpressionAttributeValues: { ':mytaskId': taskId }
     };
     const task_data_result = await docClient.scan(params).promise();
-    const task_data = task_data_result.Item;
+    const task_data = task_data_result.Items[0];
     
 
     //send report to history table
@@ -33,23 +33,23 @@ exports.decision = async(event) => {
 
     //delete task from staging task table
     var Deleteparams = {
-        TableName: table, //stagingtask table
+        TableName: tableName, //stagingtask table
         Key: {
             "taskId": taskId
         },
         ConditionExpression: "taskId = :mytaskId",
         ExpressionAttributeValues: { ":mytaskId": taskId }
     };
-    docClient.delete(params);
+    const res1 = await docClient.delete(Deleteparams).promise();
     }
     else if(flag == "Resubmit"){
         var params = {
-            TableName: tableName,
-            FilterExpression: 'taskId = :mytaskId',
-            ExpressionAttributeValues: { ':mytaskId': taskId }
-        };
-        const task_data_result = await docClient.scan(params).promise();
-        const task_data = task_data_result.Item;
+        TableName: tableName,
+        FilterExpression: 'taskId =:mytaskId',
+        ExpressionAttributeValues: { ':mytaskId': taskId }
+    };
+    const task_data_result = await docClient.scan(params).promise();
+    const task_data = task_data_result.Items[0];
        
     
         //send report to current task table
@@ -62,14 +62,14 @@ exports.decision = async(event) => {
     
         //delete task from staging task table
         var Deleteparams = {
-            TableName: table, //stagingtask table
+            TableName: tableName, //stagingtask table
             Key: {
                 "taskId": taskId
             },
             ConditionExpression: "taskId = :mytaskId",
             ExpressionAttributeValues: { ":mytaskId": taskId }
         };
-        docClient.delete(params);
+    const res2 = await docClient.delete(Deleteparams).promise();
     }
     else{
         const response = "[INFO] WRONG FLAG ! ";

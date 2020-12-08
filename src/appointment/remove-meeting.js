@@ -12,13 +12,12 @@ exports.removemeeting = async(event) => {
     const meetingId = eventBody.meetingId;
     var params = {
         TableName: tableName,
-        FilterExpression: 'meetingId = :mymeetingId',
+        FilterExpression: 'meetingId =:mymeetingId',
         ExpressionAttributeValues: { ':mymeetingId': meetingId }
     };
     const meeting_result = await docClient.scan(params).promise();
-    const meeting = meeting_result.Item;
+    const meeting = meeting_result.Item[0];
     
-
     //send report to historyTable
     var Updateparams = {
         TableName: tableNameTwo,
@@ -29,14 +28,14 @@ exports.removemeeting = async(event) => {
 
     //delete task from current task table
     var Deleteparams = {
-        TableName: table, //currenttask table
+        TableName: tableName, //currenttask table
         Key: {
             "meetingId": meetingId
         },
         ConditionExpression: "meetingId=:mymeetingId",
         ExpressionAttributeValues: { ":mymeetingId":meetingId }
     };
-    docClient.delete(params);
+    const res1 = await docClient.delete(params).promise();
 
     const response = "WORK HARD!";
     // All log statements are written to CloudWatch

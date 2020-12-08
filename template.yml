@@ -89,6 +89,72 @@ Resources:
             Path: /newsfeed/{workspaceId}
             Method: POST
 
+  getMeeting:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/appointment/get-meeting.getAppointment
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: Get meeting
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref MeetingTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref MeetingTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /meeting/{workspaceid}
+            Method: GET
+          
+  postMeeting:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/appointment/post-meeting.postmeeting
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: Post meeting
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref MeetingTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref MeetingTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /meeting
+            Method: POST
+
+  removeMeeting:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/appointment/remove-meeting.removemeeting
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: Remove meeting
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref MeetingTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref StagingTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref CurrentTaskTable
+          SAMPLE_TABLE_TWO: !Ref StagingTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /meeting/{workspaceid}
+            Method: POST
+
   getComment:
     Type: AWS::Serverless::Function
     Properties:
@@ -109,7 +175,28 @@ Resources:
           Properties:
             Path: /comment/{postid}
             Method: GET
-  
+
+  getWorker:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/worker/workerInfo.worker
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: Get workers
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref WorkerTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref WorkerTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /worker/{workspaceid}
+            Method: GET
+
   postComment:
     Type: AWS::Serverless::Function
     Properties:
@@ -215,7 +302,7 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path: /submitReport
+            Path: /submitReport/{taskId}
             Method: POST
   
   decideReport:
@@ -242,7 +329,7 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path: /decideReport
+            Path: /decideReport/{taskId}
             Method: POST
 
   getHistory:
@@ -294,6 +381,17 @@ Resources:
       TableName: oldTaskAWS
       PrimaryKey:
         Name: taskId
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+
+  MeetingTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: meetingTableAWS
+      PrimaryKey:
+        Name: meetingId
         Type: String
       ProvisionedThroughput:
         ReadCapacityUnits: 2

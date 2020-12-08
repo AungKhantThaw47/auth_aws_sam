@@ -8,7 +8,7 @@ var s3 = new AWS.S3();
 exports.postmeeting = async(event) => {
 
     const eventBody = JSON.parse(event.body);
-    const meetingId = event.pathParameters.meetingId;
+    const meetingId = eventBody.meetingId;
     const workspaceId = eventBody.workspaceId;
     const title = eventBody.title;
     const starttime = eventBody.starttime;
