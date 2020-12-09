@@ -110,6 +110,27 @@ Resources:
             Path: /meeting/{workspaceid}
             Method: GET
           
+  getOldMeeting:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/appointment/get-oldmeeting.getoldAppointment
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: Get old meeting
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref OldMeetingTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref OldMeetingTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /meeting/old/{workspaceid}
+            Method: GET
+          
   postMeeting:
     Type: AWS::Serverless::Function
     Properties:
@@ -143,16 +164,16 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref MeetingTable
         - DynamoDBCrudPolicy:
-            TableName: !Ref StagingTable
+            TableName: !Ref OldMeetingTable
       Environment:
         Variables:
-          SAMPLE_TABLE: !Ref CurrentTaskTable
-          SAMPLE_TABLE_TWO: !Ref StagingTable
+          SAMPLE_TABLE: !Ref MeetingTable
+          SAMPLE_TABLE_TWO: !Ref OldMeetingTable
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /meeting/{workspaceid}
+            Path: /meeting/remove/{meetingid}
             Method: POST
 
   getComment:
@@ -281,55 +302,77 @@ Resources:
             Path: /task/taskDetail/{taskId}
             Method: GET
 
-  submitReport:
+
+  ReportTask:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/report/submitReport.submitReport
+      Handler: src/reportHandler/report.reportTask
       Runtime: nodejs12.x
       MemorySize: 128
       Timeout: 100
-      Description: Submit report
+      Description: Report task 
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref CurrentTaskTable
         - DynamoDBCrudPolicy:
-            TableName: !Ref StagingTable
+            TableName: !Ref TempTaskTable
       Environment:
         Variables:
           SAMPLE_TABLE: !Ref CurrentTaskTable
-          SAMPLE_TABLE_TWO: !Ref StagingTable
+          SAMPLE_TABLE_TWO: !Ref TempTaskTable
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /submitReport/{taskId}
+            Path: /report
             Method: POST
   
-  decideReport:
+  GetReport:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/report/decision.decision
+      Handler: src/reportHandler/getreport.getReport
       Runtime: nodejs12.x
       MemorySize: 128
       Timeout: 100
-      Description: Classify report
+      Description: Get Report 
       Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Ref CurrentTaskTable
-        - DynamoDBCrudPolicy:
-            TableName: !Ref StagingTable
         - DynamoDBCrudPolicy:
             TableName: !Ref OldTaskTable
       Environment:
         Variables:
-          SAMPLE_TABLE: !Ref StagingTable
-          SAMPLE_TABLE_TWO: !Ref OldTaskTable
-          SAMPLE_TABLE_THREE : !Ref CurrentTaskTable
+          SAMPLE_TABLE: !Ref OldTaskTable
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /decideReport/{taskId}
+            Path: /report/{workspaceid}
+            Method: GET
+
+  ControlTask:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/reportHandler/control.controlTask
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Description: Control task 
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CurrentTaskTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TempTaskTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref OldTaskTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref CurrentTaskTable
+          SAMPLE_TABLE_TWO: !Ref TempTaskTable
+          SAMPLE_TABLE_THREE: !Ref OldTaskTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /control
             Method: POST
 
   getHistory:
@@ -386,6 +429,17 @@ Resources:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
 
+  TempTaskTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: TempTaskAWS
+      PrimaryKey:
+        Name: taskId
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+
   MeetingTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -397,12 +451,12 @@ Resources:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
 
-  StagingTable:
+  OldMeetingTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      TableName: StagingAWS
+      TableName: OldmeetingTableAWS
       PrimaryKey:
-        Name: taskId
+        Name: meetingId
         Type: String
       ProvisionedThroughput:
         ReadCapacityUnits: 2

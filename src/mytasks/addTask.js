@@ -12,8 +12,10 @@ exports.addTask = async(event) => {
     const body = {
         workerId: eventBody.workerId,
         time: eventBody.time,
+        customer : eventBody.customer,
         location: eventBody.location,
         topic: eventBody.topic,
+        workspaceId : eventBody.workerId,
         taskId: eventBody.workerId + eventBody.workspaceId + Date.now(),
         info: eventBody.info //addtional information
     };
